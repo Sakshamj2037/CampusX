@@ -31,8 +31,8 @@ const Canteen = () => {
   const fetchData = async () => {
     try {
       const [menuRes, tokenRes] = await Promise.all([
-        axios.get('http://localhost:5000/api/tokens/menu'),
-        axios.get('http://localhost:5000/api/tokens/my-tokens')
+        axios.get(`${import.meta.env.VITE_API_URL}/api/tokens/menu`),
+        axios.get(`${import.meta.env.VITE_API_URL}/api/tokens/my-tokens`)
       ]);
       setMenu(menuRes.data);
       setTokens(tokenRes.data);
@@ -50,7 +50,7 @@ const Canteen = () => {
 
   const confirmOrder = async () => {
     try {
-      await axios.post('http://localhost:5000/api/tokens/order', { itemId: selectedItem.id });
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/tokens/order`, { itemId: selectedItem.id });
       setShowOrderModal(false);
       setSelectedItem(null);
       fetchData(); // refresh tokens
