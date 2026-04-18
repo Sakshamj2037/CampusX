@@ -27,7 +27,7 @@ const LostFound = () => {
 
   const fetchItems = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/lostfound');
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/lostfound`);
       if (response.ok) {
         const data = await response.json();
         setItems(data);
@@ -42,7 +42,7 @@ const LostFound = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:5000/api/lostfound', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/lostfound`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -65,7 +65,7 @@ const LostFound = () => {
 
   const updateStatus = async (id, newStatus) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/lostfound/${id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/lostfound/${id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

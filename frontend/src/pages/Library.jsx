@@ -34,8 +34,8 @@ const Library = () => {
     setLoading(true);
     try {
       const [booksRes, issuedRes] = await Promise.all([
-        axios.get('http://localhost:5000/api/library/books'),
-        axios.get('http://localhost:5000/api/library/issued')
+        axios.get(`${import.meta.env.VITE_API_URL}/api/library/books`),
+        axios.get(`${import.meta.env.VITE_API_URL}/api/library/issued`)
       ]);
       setBooks(booksRes.data);
       setIssuedBooks(issuedRes.data);
@@ -53,7 +53,7 @@ const Library = () => {
 
   const handleIssueBook = async (bookId) => {
     try {
-      const res = await axios.post(`http://localhost:5000/api/library/issue/${bookId}`);
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/library/issue/${bookId}`);
       showToast(res.data.message);
       fetchData(); // Refresh data
     } catch (error) {
@@ -68,7 +68,7 @@ const Library = () => {
     }
 
     try {
-      const res = await axios.post(`http://localhost:5000/api/library/return/${issueId}`);
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/library/return/${issueId}`);
       showToast(res.data.message);
       
       // Update user points in context
