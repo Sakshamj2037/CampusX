@@ -16,12 +16,7 @@
         "MongoDB"
       ],
       "role": "Fullstack",
-      "availability": "looking",
-      "bio": "Passionate fullstack developer building scalable web applications. Open to hackathons!",
-      "experienceLevel": "Intermediate",
-      "projects": ["CampusX Hub", "E-commerce Platform"],
-      "socialLinks": { "github": "https://github.com/johnhacker", "linkedin": "https://linkedin.com/in/johnhacker" },
-      "profileImage": "https://api.dicebear.com/7.x/initials/svg?seed=John%20Hacker&backgroundColor=0d9488"
+      "availability": "looking"
     },
     {
       "id": "3da2f492-7083-4221-87aa-ad993a40ce92",
@@ -42,13 +37,8 @@
         "TensorFlow",
         "Pandas"
       ],
-      "role": "ML Engineer",
-      "availability": "in-team",
-      "bio": "Machine Learning enthusiast exploring Deep Learning and Computer Vision.",
-      "experienceLevel": "Advanced",
-      "projects": ["AI Health Hub", "Sign Language Detector"],
-      "socialLinks": { "github": "https://github.com/sakshamjain", "linkedin": "https://linkedin.com/in/sakshamjain" },
-      "profileImage": "https://api.dicebear.com/7.x/initials/svg?seed=Saksham%20Jain&backgroundColor=0ea5e9"
+      "role": "ML",
+      "availability": "in-team"
     },
     {
       "id": "f8eedad3-cb50-4268-99df-f61291d22e03",
@@ -59,15 +49,7 @@
       "badges": [],
       "joinedEvents": [
         "1"
-      ],
-      "techStack": ["HTML", "CSS", "JS"],
-      "role": "Frontend",
-      "availability": "looking",
-      "bio": "Aspiring frontend developer currently mastering React.",
-      "experienceLevel": "Beginner",
-      "projects": ["Weather App", "To-Do List"],
-      "socialLinks": { "github": "https://github.com/fastuser", "linkedin": "https://linkedin.com/in/fastuser" },
-      "profileImage": "https://api.dicebear.com/7.x/initials/svg?seed=Fast%20User&backgroundColor=8b5cf6"
+      ]
     },
     {
       "id": "a1b2c3d4",
@@ -85,15 +67,7 @@
         "3",
         "4",
         "5"
-      ],
-      "techStack": ["Next.js", "Tailwind CSS", "Figma"],
-      "role": "Designer / UI Developer",
-      "availability": "looking",
-      "bio": "UI/UX Designer who codes. Bridging the gap between design and engineering.",
-      "experienceLevel": "Intermediate",
-      "projects": ["CampusX Redesign", "Startup Landing Page"],
-      "socialLinks": { "github": "https://github.com/rahulsharma", "linkedin": "https://linkedin.com/in/rahulsharma" },
-      "profileImage": "https://api.dicebear.com/7.x/initials/svg?seed=Rahul%20Sharma&backgroundColor=f59e0b"
+      ]
     },
     {
       "id": "e5f6g7h8",
@@ -109,15 +83,7 @@
         "1",
         "2",
         "3"
-      ],
-      "techStack": ["Java", "Spring Boot", "MySQL"],
-      "role": "Backend",
-      "availability": "in-team",
-      "bio": "Backend architecture lover. Building robust APIs is my jam.",
-      "experienceLevel": "Advanced",
-      "projects": ["Microservices Boilerplate", "Banking API"],
-      "socialLinks": { "github": "https://github.com/priyasingh", "linkedin": "https://linkedin.com/in/priyasingh" },
-      "profileImage": "https://api.dicebear.com/7.x/initials/svg?seed=Priya%20Singh&backgroundColor=ec4899"
+      ]
     },
     {
       "id": "i9j0k1l2",

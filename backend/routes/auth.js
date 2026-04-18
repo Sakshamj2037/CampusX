@@ -30,12 +30,7 @@ router.post('/signup', async (req, res) => {
       joinedEvents: [],
       techStack: [],
       role: '',
-      availability: 'looking',
-      bio: 'Enthusiastic student looking to build awesome projects!',
-      experienceLevel: 'Beginner',
-      projects: [],
-      socialLinks: { github: '', linkedin: '' },
-      profileImage: `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(name)}&backgroundColor=0d9488`
+      availability: 'looking'
     };
 
     db.users.push(newUser);
@@ -44,13 +39,7 @@ router.post('/signup', async (req, res) => {
     const payload = { user: { id: newUser.id } };
     const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '10h' });
 
-    res.status(201).json({ 
-      token, 
-      user: { 
-        id: newUser.id, name, email, points: 0, badges: [], techStack: [], role: '', availability: 'looking',
-        bio: newUser.bio, experienceLevel: newUser.experienceLevel, profileImage: newUser.profileImage
-      } 
-    });
+    res.status(201).json({ token, user: { id: newUser.id, name, email, points: 0, badges: [], techStack: [], role: '', availability: 'looking' } });
   } catch (error) {
     res.status(500).json({ message: 'Server error' });
   }
