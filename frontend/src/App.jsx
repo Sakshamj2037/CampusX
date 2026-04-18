@@ -11,6 +11,7 @@ import Canteen from './pages/Canteen';
 import MapView from './pages/MapView';
 import LostFound from './pages/LostFound';
 import PingMe from './pages/PingMe';
+import Library from './pages/Library';
 
 const PrivateRoute = ({ children }) => {
   const { user, loading } = useContext(AuthContext);
@@ -75,6 +76,11 @@ function AnimatedRoutes() {
         <Route path="/pingme" element={
           <motion.div initial="initial" animate="in" exit="out" variants={pageVariants} transition={pageTransition}>
             <PrivateRoute><PingMe /></PrivateRoute>
+          </motion.div>
+        } />
+        <Route path="/library" element={
+          <motion.div initial="initial" animate="in" exit="out" variants={pageVariants} transition={pageTransition}>
+            <PrivateRoute><Library /></PrivateRoute>
           </motion.div>
         } />
       </Routes>

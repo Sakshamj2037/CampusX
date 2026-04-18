@@ -10,7 +10,7 @@ const LostFound = () => {
   const [showForm, setShowForm] = useState(false);
   const [filter, setFilter] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
-  
+
   // Form State
   const [formData, setFormData] = useState({
     title: '',
@@ -19,6 +19,7 @@ const LostFound = () => {
     image: '',
     status: 'lost'
   });
+  const [toast, setToast] = useState('');
 
   useEffect(() => {
     fetchItems();
@@ -26,7 +27,7 @@ const LostFound = () => {
 
   const fetchItems = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/lostfound`);
+      const response = await fetch('http://localhost:5000/api/lostfound');
       if (response.ok) {
         const data = await response.json();
         setItems(data);
@@ -41,7 +42,7 @@ const LostFound = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/lostfound`, {
+      const response = await fetch('http://localhost:5000/api/lostfound', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -53,6 +54,8 @@ const LostFound = () => {
       if (response.ok) {
         setFormData({ title: '', description: '', location: '', image: '', status: 'lost' });
         setShowForm(false);
+        setToast('Item reported successfully!');
+        setTimeout(() => setToast(''), 3000);
         fetchItems(); // Refresh list
       }
     } catch (error) {
@@ -60,22 +63,24 @@ const LostFound = () => {
     }
   };
 
-  const handleClaim = async (id) => {
+  const updateStatus = async (id, newStatus) => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/lostfound/${id}`, {
+      const response = await fetch(`http://localhost:5000/api/lostfound/${id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
-        body: JSON.stringify({ status: 'claimed' }),
+        body: JSON.stringify({ status: newStatus }),
       });
 
       if (response.ok) {
         fetchItems();
+        setToast(newStatus === 'found' ? 'Marked as found!' : 'Item claimed successfully!');
+        setTimeout(() => setToast(''), 3000);
       }
     } catch (error) {
-      console.error('Error claiming item:', error);
+      console.error('Error updating item:', error);
     }
   };
 
@@ -91,14 +96,13 @@ const LostFound = () => {
     { id: 'all', label: 'All Items' },
     { id: 'lost', label: 'Lost' },
     { id: 'found', label: 'Found' },
-    { id: 'report', label: 'Reports' },
-    { id: 'claim', label: 'Claims' }
+    { id: 'claimed', label: 'Claimed' }
   ];
 
   const filteredItems = items.filter(item => {
     const matchesFilter = filter === 'all' || item.status === filter;
-    const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          item.description.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.description.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesFilter && matchesSearch;
   });
 
@@ -141,7 +145,7 @@ const LostFound = () => {
                       type="text"
                       required
                       value={formData.title}
-                      onChange={(e) => setFormData({...formData, title: e.target.value})}
+                      onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                       className="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-teal-500"
                       placeholder="e.g. Blue Water Bottle"
                     />
@@ -150,13 +154,11 @@ const LostFound = () => {
                     <label className="block text-sm text-slate-400 mb-1">Type</label>
                     <select
                       value={formData.status}
-                      onChange={(e) => setFormData({...formData, status: e.target.value})}
+                      onChange={(e) => setFormData({ ...formData, status: e.target.value })}
                       className="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-teal-500"
                     >
                       <option value="lost">Lost</option>
                       <option value="found">Found</option>
-                      <option value="report">Report</option>
-                      <option value="claim">Claim</option>
                     </select>
                   </div>
                   <div>
@@ -167,7 +169,7 @@ const LostFound = () => {
                         type="text"
                         required
                         value={formData.location}
-                        onChange={(e) => setFormData({...formData, location: e.target.value})}
+                        onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                         className="w-full bg-slate-900/50 border border-slate-700 rounded-xl pl-10 pr-4 py-2 text-white focus:outline-none focus:border-teal-500"
                         placeholder="e.g. Library 2nd Floor"
                       />
@@ -180,7 +182,7 @@ const LostFound = () => {
                       <input
                         type="url"
                         value={formData.image}
-                        onChange={(e) => setFormData({...formData, image: e.target.value})}
+                        onChange={(e) => setFormData({ ...formData, image: e.target.value })}
                         className="w-full bg-slate-900/50 border border-slate-700 rounded-xl pl-10 pr-4 py-2 text-white focus:outline-none focus:border-teal-500"
                         placeholder="https://example.com/image.jpg"
                       />
@@ -192,7 +194,7 @@ const LostFound = () => {
                   <textarea
                     required
                     value={formData.description}
-                    onChange={(e) => setFormData({...formData, description: e.target.value})}
+                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                     className="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-teal-500 h-24 resize-none"
                     placeholder="Provide details about the item..."
                   ></textarea>
@@ -214,17 +216,16 @@ const LostFound = () => {
             <button
               key={opt.id}
               onClick={() => setFilter(opt.id)}
-              className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${
-                filter === opt.id 
-                  ? 'bg-teal-500 text-white shadow-[0_0_15px_rgba(20,184,166,0.4)]' 
+              className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${filter === opt.id
+                  ? 'bg-teal-500 text-white shadow-[0_0_15px_rgba(20,184,166,0.4)]'
                   : 'bg-slate-800/80 text-slate-400 hover:bg-slate-700 hover:text-slate-200 border border-slate-700/50'
-              }`}
+                }`}
             >
               {opt.label}
             </button>
           ))}
         </div>
-        
+
         <div className="relative w-full md:w-64">
           <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
           <input
@@ -237,6 +238,20 @@ const LostFound = () => {
         </div>
       </div>
 
+      <AnimatePresence>
+        {toast && (
+          <motion.div 
+            initial={{ opacity: 0, y: -50, scale: 0.8 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            className="fixed top-24 left-1/2 -translate-x-1/2 z-50 bg-gradient-to-r from-teal-500 to-blue-500 text-white px-8 py-4 rounded-full shadow-[0_10px_40px_rgba(20,184,166,0.4)] font-bold text-xl flex items-center gap-3 border border-white/20 backdrop-blur-md"
+          >
+            <CheckCircle size={24} className="text-white" />
+            {toast}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredItems.length === 0 ? (
           <div className="col-span-full text-center py-12 glass-panel border border-slate-700/30">
@@ -248,45 +263,51 @@ const LostFound = () => {
           filteredItems.map((item) => (
             <motion.div
               key={item.id}
-              whileHover={{ y: -5 }}
-              className={`glass-panel border overflow-hidden relative ${
-                item.status === 'claimed' ? 'border-emerald-500/30 opacity-75' : 
-                item.status === 'found' ? 'border-blue-500/30' : 
-                item.status === 'report' ? 'border-amber-500/30' :
-                item.status === 'claim' ? 'border-purple-500/30' :
-                'border-rose-500/30'
-              }`}
+              whileHover={item.status !== 'claimed' ? { y: -5, scale: 1.02 } : {}}
+              className={`glass-panel border overflow-hidden relative transition-all ${item.status === 'claimed' ? 'border-slate-600/30 opacity-75' :
+                  item.status === 'found' ? 'border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.1)] hover:shadow-[0_0_20px_rgba(16,185,129,0.2)]' :
+                  'border-rose-500/30 shadow-[0_0_15px_rgba(244,63,94,0.1)] hover:shadow-[0_0_20px_rgba(244,63,94,0.2)]'
+                }`}
             >
-              <div className={`absolute top-0 left-0 w-1 h-full ${
-                item.status === 'claimed' ? 'bg-emerald-500' : 
-                item.status === 'found' ? 'bg-blue-500' : 
-                item.status === 'report' ? 'bg-amber-500' :
-                item.status === 'claim' ? 'bg-purple-500' :
-                'bg-rose-500'
-              }`}></div>
-              
-              {item.image && (
-                <div className="h-40 w-full overflow-hidden bg-slate-900">
+              <div className={`absolute top-0 left-0 w-1 h-full ${item.status === 'claimed' ? 'bg-slate-500' :
+                  item.status === 'found' ? 'bg-emerald-500' :
+                  'bg-rose-500'
+                }`}></div>
+
+              {item.image ? (
+                <div className="h-40 w-full overflow-hidden bg-slate-900 relative">
                   <img src={item.image} alt={item.title} className="w-full h-full object-cover opacity-80 hover:opacity-100 transition-opacity" />
+                  {item.status === 'claimed' && (
+                     <div className="absolute inset-0 bg-slate-900/60 flex items-center justify-center">
+                        <span className="bg-slate-800 text-white font-bold px-4 py-2 rounded-full border border-slate-600 shadow-lg transform -rotate-12">CLAIMED</span>
+                     </div>
+                  )}
+                </div>
+              ) : (
+                <div className="h-40 w-full bg-slate-800/80 flex flex-col items-center justify-center relative border-b border-slate-700/50">
+                  <ImageIcon size={40} className="text-slate-600 mb-2" />
+                  <span className="text-xs text-slate-500 font-semibold tracking-wider uppercase">No Image Available</span>
+                  {item.status === 'claimed' && (
+                     <div className="absolute inset-0 bg-slate-900/60 flex items-center justify-center">
+                        <span className="bg-slate-800 text-white font-bold px-4 py-2 rounded-full border border-slate-600 shadow-lg transform -rotate-12">CLAIMED</span>
+                     </div>
+                  )}
                 </div>
               )}
-              
+
               <div className="p-5">
                 <div className="flex justify-between items-start mb-2">
                   <h3 className="text-lg font-bold text-slate-100 truncate pr-2">{item.title}</h3>
-                  <span className={`px-2 py-1 text-xs font-bold rounded-full uppercase tracking-wider ${
-                    item.status === 'claimed' ? 'bg-emerald-500/20 text-emerald-400' : 
-                    item.status === 'found' ? 'bg-blue-500/20 text-blue-400' : 
-                    item.status === 'report' ? 'bg-amber-500/20 text-amber-400' :
-                    item.status === 'claim' ? 'bg-purple-500/20 text-purple-400' :
-                    'bg-rose-500/20 text-rose-400'
-                  }`}>
+                  <span className={`px-2 py-1 text-xs font-bold rounded-full uppercase tracking-wider ${item.status === 'claimed' ? 'bg-slate-500/20 text-slate-400 border border-slate-500/30' :
+                      item.status === 'found' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' :
+                      'bg-rose-500/20 text-rose-400 border border-rose-500/30'
+                    }`}>
                     {item.status}
                   </span>
                 </div>
-                
+
                 <p className="text-sm text-slate-400 mb-4 line-clamp-2 min-h-[40px]">{item.description}</p>
-                
+
                 <div className="space-y-2 mb-4">
                   <div className="flex items-center text-xs text-slate-300">
                     <MapPin size={14} className="mr-2 text-teal-400" />
@@ -298,13 +319,31 @@ const LostFound = () => {
                   </div>
                 </div>
 
-                {item.status !== 'claimed' && (
+                {item.status === 'lost' && (
                   <button
-                    onClick={() => handleClaim(item.id)}
-                    className="w-full py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-sm font-medium transition-colors border border-slate-700 hover:border-teal-500/50 flex items-center justify-center gap-2"
+                    onClick={() => updateStatus(item.id, 'found')}
+                    className="w-full py-2.5 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-xl text-sm font-bold transition-all hover:shadow-[0_0_15px_rgba(16,185,129,0.4)] flex items-center justify-center gap-2"
                   >
-                    <CheckCircle size={16} className="text-teal-400" />
-                    Mark as Claimed
+                    <CheckCircle size={16} />
+                    Mark as Found
+                  </button>
+                )}
+                {item.status === 'found' && (
+                  <button
+                    onClick={() => updateStatus(item.id, 'claimed')}
+                    className="w-full py-2.5 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-xl text-sm font-bold transition-all hover:shadow-[0_0_15px_rgba(59,130,246,0.4)] flex items-center justify-center gap-2"
+                  >
+                    <Package size={16} />
+                    Claim Item
+                  </button>
+                )}
+                {item.status === 'claimed' && (
+                  <button
+                    disabled
+                    className="w-full py-2.5 bg-slate-800 text-slate-500 rounded-xl text-sm font-bold border border-slate-700 cursor-not-allowed flex items-center justify-center gap-2"
+                  >
+                    <CheckCircle size={16} />
+                    Already Claimed
                   </button>
                 )}
               </div>

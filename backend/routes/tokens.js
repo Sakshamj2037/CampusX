@@ -9,7 +9,14 @@ const menuItems = [
   { id: 'm1', name: 'Veg Burger', price: 45 },
   { id: 'm2', name: 'Cold Coffee', price: 60 },
   { id: 'm3', name: 'Masala Dosa', price: 50 },
-  { id: 'm4', name: 'Paneer Wrap', price: 80 }
+  { id: 'm4', name: 'Paneer Wrap', price: 80 },
+  { id: 'm5', name: 'Chole Bhature', price: 60 },
+  { id: 'm6', name: 'Samosa Chaat', price: 30 },
+  { id: 'm7', name: 'Masala Maggi', price: 40 },
+  { id: 'm8', name: 'Veg Momos', price: 50 },
+  { id: 'm9', name: 'Bread Pakora', price: 25 },
+  { id: 'm10', name: 'Rajma Chawal', price: 70 },
+  { id: 'm11', name: 'Aloo Paratha', price: 35 }
 ];
 
 router.get('/menu', (req, res) => {

@@ -24,6 +24,10 @@ router.post('/', authMiddleware, async (req, res) => {
     if (!title || !description || !location || !status) {
       return res.status(400).json({ message: 'Missing required fields' });
     }
+    
+    if (status !== 'lost' && status !== 'found') {
+      return res.status(400).json({ message: 'Status must be lost or found' });
+    }
 
     const newItem = {
       id: crypto.randomUUID(),

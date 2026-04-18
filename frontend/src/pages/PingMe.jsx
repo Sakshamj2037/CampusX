@@ -18,12 +18,12 @@ const PingMe = () => {
     setLoading(true);
     try {
       if (activeTab === 'browse') {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/users`, {
+        const res = await fetch('http://localhost:5000/api/users', {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         });
         if (res.ok) setUsersList(await res.json());
       } else {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/requests`, {
+        const res = await fetch('http://localhost:5000/api/requests', {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         });
         if (res.ok) {
@@ -40,7 +40,7 @@ const PingMe = () => {
 
   const sendRequest = async (toUserId) => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/requests`, {
+      const res = await fetch('http://localhost:5000/api/requests', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -61,7 +61,7 @@ const PingMe = () => {
 
   const updateRequest = async (id, status) => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/requests/${id}`, {
+      const res = await fetch(`http://localhost:5000/api/requests/${id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

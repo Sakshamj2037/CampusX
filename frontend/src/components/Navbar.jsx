@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
-import { GraduationCap, LayoutDashboard, CalendarDays, Coffee, Map, LogOut, Package, Users } from 'lucide-react';
+import { GraduationCap, LayoutDashboard, CalendarDays, Coffee, Map, LogOut, Package, Users, BookOpen } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const Navbar = () => {
@@ -14,6 +14,7 @@ const Navbar = () => {
     { name: 'Map', path: '/map', icon: Map },
     { name: 'Lost & Found', path: '/lostfound', icon: Package },
     { name: 'PingMe', path: '/pingme', icon: Users },
+    { name: 'Library', path: '/library', icon: BookOpen },
   ];
 
   return (

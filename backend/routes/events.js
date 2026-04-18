@@ -40,7 +40,8 @@ router.post('/:id/join', authMiddleware, async (req, res) => {
 
     // Update user points and events
     user.joinedEvents.push(eventId);
-    user.points += 50; // +50 points for joining
+    const pointsEarned = event.points || 50;
+    user.points += pointsEarned;
     event.participants.push(userId);
 
     // Gamification Badges
@@ -54,7 +55,7 @@ router.post('/:id/join', authMiddleware, async (req, res) => {
 
     await writeDB(db);
 
-    res.json({ message: 'Successfully joined event', pointsEarned: 50, totalPoints: user.points, badges: user.badges });
+    res.json({ message: 'Successfully joined event', pointsEarned, totalPoints: user.points, badges: user.badges });
   } catch (error) {
     res.status(500).json({ message: 'Server error' });
   }

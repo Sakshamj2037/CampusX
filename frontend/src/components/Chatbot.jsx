@@ -34,7 +34,7 @@ const Chatbot = () => {
     setIsTyping(true);
 
     try {
-      const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/chatbot/ask`, { message: textToSend });
+      const res = await axios.post('http://localhost:5000/api/chatbot/ask', { message: textToSend });
       setMessages(prev => [...prev, { id: Date.now(), text: res.data.reply, sender: 'bot' }]);
     } catch (error) {
       setMessages(prev => [...prev, { id: Date.now(), text: "Sorry, I'm having trouble connecting to the server.", sender: 'bot' }]);

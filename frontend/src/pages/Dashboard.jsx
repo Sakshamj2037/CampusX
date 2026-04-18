@@ -50,8 +50,8 @@ const Dashboard = () => {
     const fetchData = async () => {
       try {
         const [lbRes, noticeRes] = await Promise.all([
-          axios.get(`${import.meta.env.VITE_API_URL}/api/auth/leaderboard`),
-          axios.get(`${import.meta.env.VITE_API_URL}/api/notices`)
+          axios.get('http://localhost:5000/api/auth/leaderboard'),
+          axios.get('http://localhost:5000/api/notices')
         ]);
         setLeaderboardData(lbRes.data);
         setNotices(noticeRes.data);

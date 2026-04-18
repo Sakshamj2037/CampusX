@@ -37,7 +37,7 @@ const Events = () => {
 
   const fetchEvents = async () => {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/events`);
+      const res = await axios.get('http://localhost:5000/api/events');
       setEvents(res.data);
     } catch (error) {
       console.error(error);
@@ -48,7 +48,7 @@ const Events = () => {
 
   const joinEvent = async (eventId) => {
     try {
-      const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/events/${eventId}/join`);
+      const res = await axios.post(`http://localhost:5000/api/events/${eventId}/join`);
       
       // Update local user state
       setUser(prev => ({
@@ -188,11 +188,14 @@ const Events = () => {
                   <div className="flex items-center justify-between text-sm text-slate-400 mb-6 bg-slate-900/60 p-3 rounded-xl border border-slate-800/50">
                     <div className="flex items-center gap-1.5">
                       <Calendar size={16} className="text-teal-500" />
-                      <span>{new Date(event.date).toLocaleDateString()}</span>
+                      <span>
+                        {new Date(event.date).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })}
+                        {event.time && ` • ${event.time}`}
+                      </span>
                     </div>
                     <div className="flex items-center gap-1.5">
                       <Users size={16} className="text-blue-500" />
-                      <span>{event.participants?.length || 0}</span>
+                      <span>{(event.simulatedRegistrations || 0) + (event.participants?.length || 0)}</span>
                     </div>
                   </div>
 
@@ -211,7 +214,7 @@ const Events = () => {
                     {isJoined ? (
                       <><CheckCircle2 size={18} /> Joined</>
                     ) : (
-                      `Join Event (+50 pts)`
+                      `Join Event (+${event.points || 50} pts)`
                     )}
                   </motion.button>
                 </div>

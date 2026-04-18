@@ -12,6 +12,7 @@ const chatbotRoutes = require('./routes/chatbot');
 const lostfoundRoutes = require('./routes/lostfound');
 const userRoutes = require('./routes/users');
 const requestRoutes = require('./routes/requests');
+const libraryRoutes = require('./routes/library');
 
 dotenv.config();
 
@@ -34,6 +35,7 @@ app.use('/api/chatbot', chatbotRoutes);
 app.use('/api/lostfound', lostfoundRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/requests', requestRoutes);
+app.use('/api/library', libraryRoutes);
 
 app.get('/', (req, res) => {
   res.send('CampusX API is running...');
