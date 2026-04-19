@@ -30,7 +30,9 @@ router.post('/signup', async (req, res) => {
       joinedEvents: [],
       techStack: [],
       role: '',
-      availability: 'looking'
+      availability: 'looking',
+      createdAt: new Date().toISOString(),
+      lastActive: new Date().toISOString()
     };
 
     db.users.push(newUser);
@@ -63,6 +65,9 @@ router.post('/login', async (req, res) => {
     const payload = { user: { id: user.id } };
     const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '10h' });
 
+    user.lastActive = new Date().toISOString();
+    await writeDB(db);
+
     res.json({ token, user: { 
       id: user.id, name: user.name, email: user.email, points: user.points, badges: user.badges,
       techStack: user.techStack || [],
@@ -81,6 +86,8 @@ router.get('/me', authMiddleware, async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
+    user.lastActive = new Date().toISOString();
+    await writeDB(db);
     
     res.json({
       id: user.id,

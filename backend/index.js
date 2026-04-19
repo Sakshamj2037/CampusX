@@ -13,6 +13,7 @@ const lostfoundRoutes = require('./routes/lostfound');
 const userRoutes = require('./routes/users');
 const requestRoutes = require('./routes/requests');
 const libraryRoutes = require('./routes/library');
+const analyticsRoutes = require('./routes/analytics');
 
 dotenv.config();
 
@@ -36,6 +37,7 @@ app.use('/api/lostfound', lostfoundRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/requests', requestRoutes);
 app.use('/api/library', libraryRoutes);
+app.use('/api/analytics', analyticsRoutes);
 
 app.get('/', (req, res) => {
   res.send('CampusX API is running...');

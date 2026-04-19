@@ -12,6 +12,8 @@ import MapView from './pages/MapView';
 import LostFound from './pages/LostFound';
 import PingMe from './pages/PingMe';
 import Library from './pages/Library';
+import AnalyticsTracker from './components/AnalyticsTracker';
+import AdminAnalytics from './pages/AdminAnalytics';
 
 const PrivateRoute = ({ children }) => {
   const { user, loading } = useContext(AuthContext);
@@ -83,6 +85,11 @@ function AnimatedRoutes() {
             <PrivateRoute><Library /></PrivateRoute>
           </motion.div>
         } />
+        <Route path="/admin/analytics" element={
+          <motion.div initial="initial" animate="in" exit="out" variants={pageVariants} transition={pageTransition}>
+            <PrivateRoute><AdminAnalytics /></PrivateRoute>
+          </motion.div>
+        } />
       </Routes>
     </AnimatePresence>
   );
@@ -93,6 +100,7 @@ function AppContent() {
 
   return (
     <Router>
+      <AnalyticsTracker />
       <div className="min-h-screen bg-transparent text-slate-100 font-sans selection:bg-teal-500/30">
         {user && <Navbar />}
         <main className="container mx-auto px-4 py-8 max-w-6xl">

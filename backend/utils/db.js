@@ -219,7 +219,8 @@ const defaultData = {
       image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=400'
     }
   ],
-  issuedBooks: []
+  issuedBooks: [],
+  analytics: []
 };
 
 async function initDB() {
