@@ -29,7 +29,8 @@ app.use(express.json());
 initDB();
 
 // Connect MongoDB
-mongoose.connect(process.env.MONGO_URI).then(() => {
+const MONGO_URI = process.env.MONGO_URI || "mongodb+srv://campusx:12345678@cluster0.gag59nu.mongodb.net/campusx";
+mongoose.connect(MONGO_URI).then(() => {
   console.log('MongoDB Connected via Mongoose');
 }).catch(err => {
   console.error('MongoDB Connection Error:', err);
