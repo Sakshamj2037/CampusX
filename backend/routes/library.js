@@ -2,6 +2,7 @@ const express = require('express');
 const { v4: uuidv4 } = require('uuid');
 const { readDB, writeDB } = require('../utils/db');
 const authMiddleware = require('../middleware/auth');
+const User = require('../models/User');
 
 const router = express.Router();
 
@@ -85,7 +86,7 @@ router.post('/return/:issueId', authMiddleware, async (req, res) => {
     if (!issueRecord) return res.status(404).json({ message: 'Issue record not found' });
     if (issueRecord.returned) return res.status(400).json({ message: 'Book already returned' });
 
-    const user = db.users.find(u => u.id === userId);
+    const user = await User.findOne({ id: userId });
     if (!user) return res.status(404).json({ message: 'User not found' });
 
     const now = new Date();
@@ -114,6 +115,7 @@ router.post('/return/:issueId', authMiddleware, async (req, res) => {
     }
 
     await writeDB(db);
+    await user.save();
 
     res.json({ 
       message: fine > 0 ? `Book returned and fine of ${fine} points paid` : 'Book returned successfully', 

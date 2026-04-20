@@ -15,7 +15,7 @@ const Navbar = () => {
     { name: 'Lost & Found', path: '/lostfound', icon: Package },
     { name: 'PingMe', path: '/pingme', icon: Users },
     { name: 'Library', path: '/library', icon: BookOpen },
-    { name: 'Analytics', path: '/admin/analytics', icon: BarChart2 },
+    ...(user?.email === 'sakshamjainbbps@gmail.com' ? [{ name: 'Analytics', path: '/admin/analytics', icon: BarChart2 }] : []),
   ];
 
   return (

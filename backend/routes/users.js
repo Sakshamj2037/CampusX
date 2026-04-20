@@ -1,14 +1,14 @@
 const express = require('express');
-const { readDB } = require('../utils/db');
 const authMiddleware = require('../middleware/auth');
+const User = require('../models/User');
 
 const router = express.Router();
 
 // GET /api/users - Get all users for PingMe (exclude passwords)
 router.get('/', authMiddleware, async (req, res) => {
   try {
-    const db = await readDB();
-    const users = db.users.map(u => ({
+    const usersData = await User.find({ id: { $ne: req.user.id } }).lean();
+    const users = usersData.map(u => ({
       id: u.id,
       name: u.name,
       techStack: u.techStack || [],
@@ -16,7 +16,7 @@ router.get('/', authMiddleware, async (req, res) => {
       availability: u.availability || 'looking',
       points: u.points,
       badges: u.badges
-    })).filter(u => u.id !== req.user.id); // Exclude current user
+    }));
 
     res.json(users);
   } catch (error) {

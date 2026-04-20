@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const mongoose = require('mongoose');
 const { initDB } = require('./utils/db');
 
 // Route imports
@@ -26,6 +27,13 @@ app.use(express.json());
 
 // Initialize DB
 initDB();
+
+// Connect MongoDB
+mongoose.connect(process.env.MONGO_URI).then(() => {
+  console.log('MongoDB Connected via Mongoose');
+}).catch(err => {
+  console.error('MongoDB Connection Error:', err);
+});
 
 // Routes
 app.use('/api/auth', authRoutes);

@@ -20,7 +20,8 @@ const AnalyticsTracker = () => {
       try {
         await axios.post(`${import.meta.env.VITE_API_URL}/api/analytics/track`, {
           page: location.pathname,
-          sessionId: getSessionId()
+          sessionId: getSessionId(),
+          device: /Mobi|Android/i.test(navigator.userAgent) ? 'Mobile' : 'Desktop'
         });
       } catch (error) {
         // Silently fail if analytics is down to not disrupt user experience

@@ -1,6 +1,7 @@
 const express = require('express');
 const { readDB, writeDB } = require('../utils/db');
 const authMiddleware = require('../middleware/auth');
+const User = require('../models/User');
 
 const router = express.Router();
 
@@ -24,7 +25,7 @@ router.post('/:id/join', authMiddleware, async (req, res) => {
       return res.status(404).json({ message: 'Event not found' });
     }
 
-    const user = db.users.find(u => u.id === userId);
+    const user = await User.findOne({ id: userId });
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
@@ -53,6 +54,7 @@ router.post('/:id/join', authMiddleware, async (req, res) => {
       user.badges.push('Event Master');
     }
 
+    await user.save();
     await writeDB(db);
 
     res.json({ message: 'Successfully joined event', pointsEarned, totalPoints: user.points, badges: user.badges });

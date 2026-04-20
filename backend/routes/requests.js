@@ -2,6 +2,7 @@ const express = require('express');
 const { v4: uuidv4 } = require('uuid');
 const { readDB, writeDB } = require('../utils/db');
 const authMiddleware = require('../middleware/auth');
+const User = require('../models/User');
 
 const router = express.Router();
 
@@ -15,10 +16,19 @@ router.get('/', authMiddleware, async (req, res) => {
     const incoming = requests.filter(r => r.toUserId === userId);
     const sent = requests.filter(r => r.fromUserId === userId);
     
+    // Fetch all relevant users from Mongo
+    const userIdsToFetch = new Set([
+      ...incoming.map(r => r.fromUserId),
+      ...sent.map(r => r.toUserId)
+    ]);
+    const usersList = await User.find({ id: { $in: Array.from(userIdsToFetch) } }).lean();
+    const usersMap = {};
+    usersList.forEach(u => usersMap[u.id] = u);
+
     // Populate user details for incoming (fromUser) and sent (toUser)
     const populateUser = (r, type) => {
       const targetId = type === 'incoming' ? r.fromUserId : r.toUserId;
-      const u = db.users.find(user => user.id === targetId) || {};
+      const u = usersMap[targetId] || {};
       return {
         ...r,
         targetUser: { id: u.id, name: u.name, role: u.role, techStack: u.techStack || [] }
