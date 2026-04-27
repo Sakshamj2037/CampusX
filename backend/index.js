@@ -1,7 +1,6 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const mongoose = require('mongoose');
 const { initDB } = require('./utils/db');
 
 // Route imports
@@ -14,7 +13,6 @@ const lostfoundRoutes = require('./routes/lostfound');
 const userRoutes = require('./routes/users');
 const requestRoutes = require('./routes/requests');
 const libraryRoutes = require('./routes/library');
-const analyticsRoutes = require('./routes/analytics');
 
 dotenv.config();
 
@@ -28,14 +26,6 @@ app.use(express.json());
 // Initialize DB
 initDB();
 
-// Connect MongoDB
-const MONGO_URI = process.env.MONGO_URI || "mongodb+srv://campusx:12345678@cluster0.gag59nu.mongodb.net/campusx";
-mongoose.connect(MONGO_URI).then(() => {
-  console.log('MongoDB Connected via Mongoose');
-}).catch(err => {
-  console.error('MongoDB Connection Error:', err);
-});
-
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/events', eventRoutes);
@@ -46,7 +36,6 @@ app.use('/api/lostfound', lostfoundRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/requests', requestRoutes);
 app.use('/api/library', libraryRoutes);
-app.use('/api/analytics', analyticsRoutes);
 
 app.get('/', (req, res) => {
   res.send('CampusX API is running...');

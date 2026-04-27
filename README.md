@@ -70,4 +70,8 @@ The platform prioritizes a **premium visual experience**:
 *   Loading skeletons for seamless data fetching.
 
 ---
+<<<<<<< HEAD
 *Developed for Hackathon prototyping & demo purposes.*
+=======
+*Developed for Hackathon prototyping & demo purposes.*
+>>>>>>> 2c0a337 (Added Analytics Dashboard)
